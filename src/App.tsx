@@ -1,37 +1,50 @@
-import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { containerStyle, marginStyle } from './styles'
+import useTime from './utils/hooks/useTime'
 
-function App() {
-  const [count, setCount] = useState<{ string: string; merda: boolean }>({
-    string: 'asd',
-    merda: true,
-  })
-
+export default function App({ pages = 10, initialPresent = 4 }) {
+  const { past, present, future, goBackward, goForward, jumpInTime } = useTime(
+    pages,
+    initialPresent
+  )
   return (
-    <div className='App'>
-      <div>
-        <a href='https://vitejs.dev' target='_blank'>
-          <img src='/vite.svg' className='logo' alt='Vite logo' />
-        </a>
-        <a href='https://reactjs.org' target='_blank'>
-          <img src={reactLogo} className='logo react' alt='React logo' />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className='card'>
-        <button onClick={() => setCount({ string: ' CAZZO', merda: false })}>
-          count is {count}
+    <div>
+      <div style={containerStyle}>
+        <button onClick={goBackward} style={marginStyle}>
+          {'<'}
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        <div style={marginStyle}> Past: {JSON.stringify(past)}</div>
+        <div style={marginStyle}> {present} </div>
+        <div style={marginStyle}>Future: {JSON.stringify(future)}</div>
+        <button onClick={goForward} style={marginStyle}>
+          {'>'}
+        </button>
       </div>
-      <p className='read-the-docs'>
-        Click on the Vite and React logos to learn more
-      </p>
+      <div style={containerStyle}>
+        <button onClick={goBackward} style={marginStyle}>
+          {'<'}
+        </button>
+        {[...past, present, ...future].map((pag, idx) => (
+          <button
+            style={{
+              backgroundColor: pag === present ? 'gold' : undefined,
+              margin: '0px 2px',
+              width: '25px',
+              height: '25px',
+              padding: '0px 0px',
+              cursor: 'pointer',
+              transform: pag === present ? 'scale(1.2)' : undefined,
+              transition: 'all .1s ease-in-out',
+            }}
+            key={pag + idx}
+            onClick={() => jumpInTime(pag)}
+          >
+            {pag}
+          </button>
+        ))}
+        <button onClick={goForward} style={marginStyle}>
+          {'>'}
+        </button>
+      </div>
     </div>
   )
 }
-
-export default App
