@@ -1,4 +1,4 @@
-import { containerStyle, marginStyle } from './styles'
+import { Button, Container } from './components/styled'
 import useTime from './utils/hooks/useTime'
 
 export default function App({ pages = 10, initialPresent = 4 }) {
@@ -8,43 +8,48 @@ export default function App({ pages = 10, initialPresent = 4 }) {
   )
   return (
     <div>
-      <div style={containerStyle}>
-        <button onClick={goBackward} style={marginStyle}>
+      <Container>
+        <Button onClick={goBackward}>{'<'}</Button>
+        <div> Past: {JSON.stringify(past)}-----</div>
+        <div> {present} </div>
+        <div>-----Future: {JSON.stringify(future)}</div>
+        <Button onClick={goForward}>{'>'}</Button>
+      </Container>
+      <Container>
+        <Button isArrow onClick={goBackward}>
           {'<'}
-        </button>
-        <div style={marginStyle}> Past: {JSON.stringify(past)}</div>
-        <div style={marginStyle}> {present} </div>
-        <div style={marginStyle}>Future: {JSON.stringify(future)}</div>
-        <button onClick={goForward} style={marginStyle}>
-          {'>'}
-        </button>
-      </div>
-      <div style={containerStyle}>
-        <button onClick={goBackward} style={marginStyle}>
-          {'<'}
-        </button>
+        </Button>
         {[...past, present, ...future].map((pag, idx) => (
-          <button
-            style={{
-              backgroundColor: pag === present ? 'gold' : undefined,
-              margin: '0px 2px',
-              width: '25px',
-              height: '25px',
-              padding: '0px 0px',
-              cursor: 'pointer',
-              transform: pag === present ? 'scale(1.2)' : undefined,
-              transition: 'all .1s ease-in-out',
-            }}
+          <Button
+            isActive={pag === present}
             key={pag + idx}
             onClick={() => jumpInTime(pag)}
           >
             {pag}
-          </button>
+          </Button>
         ))}
-        <button onClick={goForward} style={marginStyle}>
+        <Button isArrow onClick={goForward}>
           {'>'}
-        </button>
-      </div>
+        </Button>
+      </Container>
+      <Container>
+        <Button isArrow onClick={goBackward}>
+          {'<'}
+        </Button>
+        {[...past, present, ...future].map((pag, idx) => (
+          <Button
+            isActive={pag === present}
+            style={{}}
+            key={pag + idx}
+            onClick={() => jumpInTime(pag)}
+          >
+            {pag}
+          </Button>
+        ))}
+        <Button isArrow onClick={goForward}>
+          {'>'}
+        </Button>
+      </Container>
     </div>
   )
 }

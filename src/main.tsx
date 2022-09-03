@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import './index.css'
+import './styles/index.css'
 
 console.log(
   "%cA black belt is a white belt that didn't quit.",
